@@ -14,3 +14,16 @@ jobs:
         echo "Título del Issue: ${{ github.event.issue.title }}"
         echo "Cuerpo del Issue: ${{ github.event.issue.body }}"
         echo "Autor del Issue: ${{ github.event.issue.user.login }}"
+
+    - name: Instalar jq
+      run: sudo apt-get update && sudo apt-get install -y jq
+
+    - name: Asignar el issue al proyecto
+      run: |
+        PROJECT_ID="2" # Reemplaza con el identificador de tu proyecto
+        ISSUE_NUMBER="${{ github.event.issue.number }}"
+        OWNER="${{ github.repository_owner }}"
+        REPO="${{ github.repository }}"
+        API_URL="https://api.github.com/projects/$PROJECT_ID/issues/$ISSUE_NUMBER"
+        DATA="{\"content_type\": \"Issue\", \"content_id\": $ISSUE_NUMBER}"
+        curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.inertia-preview+json" -d "$DATA" "$API_URL"
