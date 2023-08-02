@@ -1,0 +1,20 @@
+name: Move PR to "in PR" state
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  move_to_in_pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if the PR is opened
+        if: github.event_name == 'pull_request'
+        run: |
+          # Extract the PR number from the event payload
+          PR_NUMBER=$(echo "${{ github.event.pull_request.number }}")
+          
+          # Move the PR to the 'in PR' state using GitHub CLI (gh)
+          gh pr edit $PR_NUMBER --state "in PR"
