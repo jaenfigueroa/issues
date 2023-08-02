@@ -1,0 +1,16 @@
+name: Detectar Issue Creado
+on:
+  issues:
+    types: [opened]
+
+jobs:
+  detectar_issue:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Imprimir información del Issue
+      run: |
+        echo "Se ha creado un nuevo issue:"
+        echo "Número del Issue: ${{ github.event.issue.number }}"
+        echo "Título del Issue: ${{ github.event.issue.title }}"
+        echo "Cuerpo del Issue: ${{ github.event.issue.body }}"
+        echo "Autor del Issue: ${{ github.event.issue.user.login }}"
