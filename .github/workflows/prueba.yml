@@ -1,29 +1,18 @@
-name: Detectar Issue Creado
+name: Add to project
+
 on:
   issues:
-    types: [opened]
+    types:
+      - opened
 
 jobs:
-  detectar_issue:
+  add-to-project:
+    name: Add issue to project
     runs-on: ubuntu-latest
     steps:
-    - name: Imprimir información del Issue
-      run: |
-        echo "Se ha creado un nuevo issue:"
-        echo "Número del Issue: ${{ github.event.issue.number }}"
-        echo "Título del Issue: ${{ github.event.issue.title }}"
-        echo "Cuerpo del Issue: ${{ github.event.issue.body }}"
-        echo "Autor del Issue: ${{ github.event.issue.user.login }}"
-
-    - name: Instalar jq
-      run: sudo apt-get update && sudo apt-get install -y jq
-
-    - name: Asignar el issue al proyecto
-      run: |
-        PROJECT_ID="2" # Reemplaza con el identificador de tu proyecto
-        ISSUE_NUMBER="${{ github.event.issue.number }}"
-        OWNER="${{ github.repository_owner }}"
-        REPO="${{ github.repository }}"
-        API_URL="https://api.github.com/projects/$PROJECT_ID/issues/$ISSUE_NUMBER"
-        DATA="{\"content_type\": \"Issue\", \"content_id\": $ISSUE_NUMBER}"
-        curl -X POST -H "Authorization: token ${{ secrets.GITHUB_TOKEN }}" -H "Accept: application/vnd.github.inertia-preview+json" -d "$DATA" "$API_URL"
+      - uses: actions/add-to-project@RELEASE_VERSION
+        with:
+          # You can target a project in a different organization
+          # to the issue
+          project-url: https://github.com/users/jaenfigueroa/projects/2/
+          github-token: ${{ secrets.GITHUB_TOKEN }}
