@@ -1,0 +1,24 @@
+name: Move PR to "in PR" column
+
+on:
+  pull_request:
+    types:
+      - opened
+
+jobs:
+  move_to_in_pr:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Check if the PR is opened
+        if: github.event_name == 'pull_request'
+        run: |
+          # Extract the PR number and project ID from the event payload
+          PR_NUMBER=$(echo "${{ github.event.pull_request.number }}")
+          PROJECT_ID=2  # Replace this with your project ID
+          
+          # Get the ID of the project column you want to move the card to
+          COLUMN_ID=$(gh project column list --project $PROJECT_ID | grep "in PR" | awk '{print $1}')
+          
+          # Move the card associated with the PR to the 'in PR' column using GitHub CLI (gh)
+          gh project card move $CARD_ID --column-id $COLUMN_ID
