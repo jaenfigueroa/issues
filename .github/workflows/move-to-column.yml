@@ -1,24 +1,24 @@
-name: Move PR to "in PR" column
+# name: Move PR to "in PR" column
 
-on:
-  pull_request:
-    types:
-      - opened
+# on:
+#   pull_request:
+#     types:
+#       - opened
 
-jobs:
-  move_to_in_pr:
-    runs-on: ubuntu-latest
+# jobs:
+#   move_to_in_pr:
+#     runs-on: ubuntu-latest
 
-    steps:
-      - name: Check if the PR is opened
-        if: github.event_name == 'pull_request'
-        run: |
-          # Extraer el número PR y el ID del proyecto de la carga útil del evento.
-          PR_NUMBER=$(echo "${{ github.event.pull_request.number }}")
-          PROJECT_ID=2  # Replace this with your project ID
+#     steps:
+#       - name: Check if the PR is opened
+#         if: github.event_name == 'pull_request'
+#         run: |
+#           # Extraer el número PR y el ID del proyecto de la carga útil del evento.
+#           PR_NUMBER=$(echo "${{ github.event.pull_request.number }}")
+#           PROJECT_ID=2  # Replace this with your project ID
           
-          # Obtenga el ID de la columna del proyecto a la que desea mover la tarjeta
-          COLUMN_ID=$(gh project column list --project $PROJECT_ID | grep "in PR" | awk '{print $1}')
+#           # Obtenga el ID de la columna del proyecto a la que desea mover la tarjeta
+#           COLUMN_ID=$(gh project column list --project $PROJECT_ID | grep "in PR" | awk '{print $1}')
           
-          # Mueve la tarjeta asociada al PR a la columna 'en PR' usando GitHub CLI (gh)
-          gh project card move $CARD_ID --column-id $COLUMN_ID
+#           # Mueve la tarjeta asociada al PR a la columna 'en PR' usando GitHub CLI (gh)
+#           gh project card move $CARD_ID --column-id $COLUMN_ID
